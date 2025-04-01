@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Marketplace{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2>Marketplace</h2>
+            <p class="text-muted">Browse shops and products from our community</p>
+        </div>
+        <div class="col-md-6">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search shops or products..." aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Featured Shops</h4>
+    <div class="row mb-5">
+        {% for shop in shops %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='uploads/' + shop.logo) if shop.logo else url_for('static', filename='images/default-shop.png') }}" 
+                     class="card-img-top" alt="{{ shop.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ shop.name }}</h5>
+                    <p class="card-text text-muted">{{ shop.description|truncate(100) }}</p>
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="{{ url_for('main.shop_detail', shop_name=shop.name) }}" class="btn btn-sm btn-primary">Visit Shop</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h4 class="mb-3">New Products</h4>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='uploads/' + product.image) if product.image else url_for('static', filename='images/default-product.png') }}" 
+                     class="card-img-top product-img" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted">{{ product.description|truncate(100) }}</p>
+                    <p class="card-text fw-bold">${{ "%.2f"|format(product.price) }}</p>
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="btn btn-sm btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

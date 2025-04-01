@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Products{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Manage Products</h1>
+        <a href="{{ url_for('shop.add_product') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="bi bi-plus-circle"></i> Add Product
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Your Products</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>
+                                <img src="{{ url_for('static', filename='uploads/' + product.image) if product.image else url_for('static', filename='images/default-product.png') }}" 
+                                     class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                            </td>
+                            <td>{{ product.name }}</td>
+                            <td>${{ "%.2f"|format(product.price) }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'success' if product.quantity > 0 else 'danger' }}">
+                                    {{ product.quantity }}
+                                </span>
+                            </td>
+                            <td>{{ product.category }}</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-primary" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

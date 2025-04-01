@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="hero-section bg-primary text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4">Start Your E-Shop Today</h1>
+        <p class="lead">Create your own online store in minutes and start selling to customers worldwide</p>
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg px-4">Login</a>
+        {% elif not current_user.is_shop_owner %}
+            <a href="{{ url_for('shop.create') }}" class="btn btn-light btn-lg px-4">Create Your Shop</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-shop fs-1 text-primary"></i>
+                    <h3 class="card-title mt-3">Easy Setup</h3>
+                    <p class="card-text">Create your shop in minutes with our simple setup process.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-graph-up fs-1 text-primary"></i>
+                    <h3 class="card-title mt-3">Powerful Dashboard</h3>
+                    <p class="card-text">Track your sales, inventory, and customer data in real-time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people fs-1 text-primary"></i>
+                    <h3 class="card-title mt-3">Reach Customers</h3>
+                    <p class="card-text">Get discovered by shoppers in our marketplace.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if shops %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Shops</h2>
+        <div class="row">
+            {% for shop in shops %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename='uploads/' + shop.logo) if shop.logo else url_for('static', filename='images/default-shop.png') }}" 
+                         class="card-img-top" alt="{{ shop.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ shop.name }}</h5>
+                        <p class="card-text text-muted">{{ shop.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{{ url_for('main.shop_detail', shop_name=shop.name) }}" class="btn btn-sm btn-primary">Visit Shop</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

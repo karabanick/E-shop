@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Orders{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Manage Orders</h1>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Order History</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.created_at.strftime('%b %d, %Y') }}</td>
+                            <td>Customer {{ order.customer_id }}</td>
+                            <td>${{ "%.2f"|format(order.total) }}</td>
+                            <td>
+                                <span class="badge bg-{{ 
+                                    'success' if order.status == 'completed' 
+                                    else 'warning' if order.status == 'processing' 
+                                    else 'danger' if order.status == 'cancelled' 
+                                    else 'info' 
+                                }}">
+                                    {{ order.status|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-primary" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if order.status == 'pending' %}
+                                <a href="#" class="btn btn-sm btn-success" title="Process">
+                                    <i class="bi bi-check-circle"></i>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

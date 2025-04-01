@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='uploads/' + product.image) if product.image else url_for('static', filename='images/default-product.png') }}" 
+                 class="img-fluid rounded" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <p class="text-muted">Sold by <a href="{{ url_for('main.shop_detail', shop_name=product.shop.name) }}">{{ product.shop.name }}</a></p>
+            <h3 class="text-primary mb-4">${{ "%.2f"|format(product.price) }}</h3>
+            
+            <div class="mb-4">
+                <p>{{ product.description }}</p>
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="me-2">Availability:</span>
+                    {% if product.quantity > 0 %}
+                        <span class="badge bg-success">In Stock ({{ product.quantity }} available)</span>
+                    {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="me-2">Category:</span>
+                    <span class="badge bg-secondary">{{ product.category or 'Uncategorized' }}</span>
+                </div>
+            </div>
+
+            {% if product.quantity > 0 %}
+            <form class="row g-3">
+                <div class="col-auto">
+                    <label for="quantity" class="visually-hidden">Quantity</label>
+                    <input type="number" class="form-control" id="quantity" value="1" min="1" max="{{ product.quantity }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Add to Cart</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Product Details</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>More details about the product would go here...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

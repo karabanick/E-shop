@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="{{ url_for('shop.add_product') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="bi bi-plus-circle"></i> Add Product
+        </a>
+    </div>
+
+    <div class="row">
+        <!-- Revenue Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Revenue</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ "%.2f"|format(analytics.revenue) }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-currency-dollar fs-1 text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Sales</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analytics.total_sales }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-cart-check fs-1 text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Products</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ shop.products.count() }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-box-seam fs-1 text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Orders</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analytics.order_status.pending }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-clock-history fs-1 text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Products -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Products</h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for product in products %}
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ product.name }}</h5>
+                                <small>${{ "%.2f"|format(product.price) }}</small>
+                            </div>
+                            <p class="mb-1">{{ product.description|truncate(50) }}</p>
+                            <small>Stock: {{ product.quantity }}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for order in orders %}
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Order #{{ order.id }}</h5>
+                                <small class="text-{{ 'success' if order.status == 'completed' else 'warning' }}">
+                                    {{ order.status|title }}
+                                </small>
+                            </div>
+                            <p class="mb-1">Total: ${{ "%.2f"|format(order.total) }}</p>
+                            <small>{{ order.created_at.strftime('%b %d, %Y %I:%M %p') }}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
