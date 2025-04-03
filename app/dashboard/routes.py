@@ -16,8 +16,8 @@ def index():
 
     # Sample analylitsics data (replaceable with real data queries)
     analytics = {
-        'total_sales': 42,
-        'revenue': 1250.75,
+        'total_sales': 444,
+        'revenue': 1250000,
         'top_products': [
             {'name': 'Product A', 'sales': 15},
             {'name': 'Product B', 'sales': 12},
@@ -53,3 +53,12 @@ def orders():
     
     orders = Order.query.filter_by(shop_id=current_user.shop.id).order_by(Order.created_at.desc()).all()
     return render_template('dashboard/orders.html', orders=orders)
+
+@bp.route('/view_shop')
+@login_required
+def view_shop():
+    if not current_user.shop:
+        return redirect(url_for('shop.create'))
+    
+    shop = current_user.shop
+    return render_template('dashboard/view_shop.html', shop=shop)

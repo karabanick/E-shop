@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="hero-section bg-primary text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4">Welcome To Your E-Shop!!</h1>
+        <p class="lead">Nature and grow your E-shop.</p>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-shop fs-1 text-primary"></i>
+                    <h3 class="card-title mt-3">Notifications</h3>
+                    <p class="card-text">Keep in touch with your minions.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-graph-up fs-1 text-primary"></i>
+                    <h3 class="card-title mt-3">Top Performers</h3>
+                    <p class="card-text">Periodic assessment of you E-shop Inventory.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people fs-1 text-primary"></i>
+                    <h3 class="card-title mt-3">My Network</h3>
+                    <p class="card-text">Connect and Grow!.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if shops %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Shops</h2>
+        <div class="row">
+            {% for shop in shops %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename='uploads/' + shop.logo) if shop.logo else url_for('static', filename='images/default-shop.png') }}" 
+                         class="card-img-top" alt="{{ shop.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ shop.name }}</h5>
+                        <p class="card-text text-muted">{{ shop.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{{ url_for('main.shop_detail', shop_name=shop.name) }}" class="btn btn-sm btn-primary">Visit Shop</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

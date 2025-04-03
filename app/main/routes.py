@@ -7,6 +7,10 @@ from app.main import bp
 def index():
     return render_template('main/index.html')
 
+@bp.route('/home')
+def home():
+    return render_template('main/home.html')
+
 @bp.route('/marketplace')
 def marketplace():
     shops = Shop.query.order_by(Shop.created_at.desc()).limit(8).all()

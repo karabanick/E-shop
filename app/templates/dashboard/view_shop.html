@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <img src="{{ url_for('static', filename='uploads/' + shop.logo) if shop.logo else url_for('static', filename='images/default-shop.png') }}" 
+                 class="img-fluid rounded-circle" alt="{{ shop.name }}" style="width: 150px; height: 150px; object-fit: cover;">
+        </div>
+        <div class="col-md-9">
+            <h1>{{ shop.name }}</h1>
+            <p class="lead">{{ shop.description }}</p>
+            {% if shop.banner %}
+            <img src="{{ url_for('static', filename='uploads/' + shop.banner) }}" class="img-fluid rounded mb-3" alt="{{ shop.name }} banner">
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Products</h3>
+            {% if products %}
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ url_for('static', filename='uploads/' + product.image) if product.image else url_for('static', filename='images/default-product.png') }}" 
+                             class="card-img-top product-img" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text text-muted">{{ product.description|truncate(100) }}</p>
+                            <p class="card-text fw-bold">${{ "%.2f"|format(product.price) }}</p>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="btn btn-sm btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                This shop doesn't have any products yet.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

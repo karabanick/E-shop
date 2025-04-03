@@ -49,7 +49,7 @@ def add_product():
         image_filename = photos.save(form.image.data)
         product = Product(
             name=form.name.data,
-            description=form.description.dta,
+            description=form.description.data,
             price=float(form.price.data),
             quantity=int(form.quantity.data),
             image=image_filename,

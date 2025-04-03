@@ -24,7 +24,7 @@ def init_db():
             products = [
                 Product(name='Product 1', description='First test description',price=9.99, quantity=10, shop=shop),
                 Product(name='Product 2', description='Second test product', price=19.99, quantity=5, shop=shop),
-                Product(name='Product 3', description='Third test product', price=29.99, quantity=2, shop=shop),
+                Product(name='Product 3', description='Third test product', price=59.99, quantity=2, shop=shop)
             ]
             db.session.add_all(products)
             db.session.commit()
