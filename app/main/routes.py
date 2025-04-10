@@ -5,7 +5,8 @@ from app.main import bp
 
 @bp.route('/')
 def index():
-    return render_template('main/index.html')
+    shops = Shop.query.all()
+    return render_template('main/index.html', shops=shops)
 
 @bp.route('/home')
 def home():

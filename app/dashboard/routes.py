@@ -16,8 +16,8 @@ def index():
 
     # Sample analylitsics data (replaceable with real data queries)
     analytics = {
-        'total_sales': 444,
-        'revenue': 1250000,
+        'total_sales': 100,
+        'revenue': 2,
         'top_products': [
             {'name': 'Product A', 'sales': 15},
             {'name': 'Product B', 'sales': 12},

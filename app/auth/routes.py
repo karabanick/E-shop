@@ -9,6 +9,9 @@ from app.models import User
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+    # Redirect to home2 if logged in but has no shop
+        if not current_user.shop:
+            return redirect(url_for('main.home2'))
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -19,9 +22,16 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
+            # Redirect to home2 if logged in but has no shop
+            if not user.shop:
+                return redirect(url_for('main.home2'))
             next_page = url_for('main.home')
         return redirect(next_page)
     return render_template('auth/login.html', title='Sign In', form=form)
+
+@bp.route('/home2')
+def home2():
+    return render_template('main/home2.html', title='Home')
 
 @bp.route('/logout')
 def logout():
