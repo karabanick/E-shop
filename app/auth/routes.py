@@ -29,10 +29,6 @@ def login():
         return redirect(next_page)
     return render_template('auth/login.html', title='Sign In', form=form)
 
-@bp.route('/home2')
-def home2():
-    return render_template('main/home2.html', title='Home')
-
 @bp.route('/logout')
 def logout():
     logout_user()
