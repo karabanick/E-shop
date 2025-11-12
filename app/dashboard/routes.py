@@ -13,11 +13,11 @@ def index():
     shop = current_user.shop
     products = shop.products.order_by(Product.created_at.desc()).limit(5).all()
     orders = Order.query.filter_by(shop_id=shop.id).order_by(Order.created_at.desc()).limit(5).all()
-
+    
     # Sample analylitsics data (replaceable with real data queries)
     analytics = {
-        'total_sales': 100,
-        'revenue': 2,
+        'total_sales': 0,
+        'revenue': 0,
         'top_products': [
             {'name': 'Product A', 'sales': 15},
             {'name': 'Product B', 'sales': 12},

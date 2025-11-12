@@ -12,7 +12,8 @@ def login():
     # Redirect to home2 if logged in but has no shop
         if not current_user.shop:
             return redirect(url_for('main.home2'))
-        return redirect(url_for('main.home'))
+       # return redirect(url_for('main.home')) - original line, commented out - Redirected to the user to main.home page after successfull login. This is modified to redirect to shop detail page, below.
+        return redirect(url_for('main.shop_detail', shop_name=current_user.shop.name))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -25,7 +26,8 @@ def login():
             # Redirect to home2 if logged in but has no shop
             if not user.shop:
                 return redirect(url_for('main.home2'))
-            next_page = url_for('main.home')
+           # next_page = url_for('main.home')
+            next_page = url_for('main.shop_detail', shop_name=user.shop.name)
         return redirect(next_page)
     return render_template('auth/login.html', title='Sign In', form=form)
 

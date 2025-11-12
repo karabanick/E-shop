@@ -16,6 +16,7 @@ def home():
 def home2():
     return render_template('main/home2.html', title='Home')
 
+
 @bp.route('/marketplace')
 def marketplace():
     shops = Shop.query.order_by(Shop.created_at.desc()).limit(8).all()
